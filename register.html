@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BHAIRAVA OSINT</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #374F6B;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+            padding: 20px;
+            margin: 20px;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .form-group label .required {
+            color: red;
+            margin-left: 5px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .form-group input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .form-group input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .form-row .form-group {
+            flex: 1;
+            min-width: calc(50% - 15px);
+        }
+        .form-switch {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .form-switch button {
+            padding: 10px 20px;
+            border: none;
+            background-color: grey;
+            color: white;
+            cursor: pointer;
+            border-radius: 4px;
+            margin: 0 5px;
+            font-size: 16px;
+        }
+        .form-switch button.active {
+            background-color: black;
+        }
+        @media (max-width: 600px) {
+            .form-row .form-group {
+                min-width: 100%;
+            }
+            .form-switch button {
+                padding: 10px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Law Enforcement Registration</h2>
+        <div class="form-switch">
+            <button id="personnel-btn" class="active" onclick="showForm('personnel')">Police Personnel Registration</button>
+            <button id="station-btn" onclick="showForm('station')">Police Station Registration</button>
+        </div>
+
+        <form id="personnel-form">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="firstName">First Name <span class="required">*</span></label>
+                    <input type="text" id="firstName" name="firstName" required>
+                </div>
+                <div class="form-group">
+                    <label for="middleName">Middle Name</label>
+                    <input type="text" id="middleName" name="middleName">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="lastName">Last Name <span class="required">*</span></label>
+                    <input type="text" id="lastName" name="lastName" required>
+                </div>
+                <div class="form-group">
+                    <label for="position">Position <span class="required">*</span></label>
+                    <input type="text" id="position" name="position" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="policeStation">Police Station <span class="required">*</span></label>
+                <input type="text" id="policeStation" name="policeStation" required>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="state">State <span class="required">*</span></label>
+                    <select id="state" name="state" required>
+                        <option value="" disabled selected>Select State/UT</option>
+                        <option value="Andhra Pradesh">Andhra Pradesh</option>
+                        <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                        <option value="Assam">Assam</option>
+                        <option value="Bihar">Bihar</option>
+                        <option value="Chhattisgarh">Chhattisgarh</option>
+                        <option value="Goa">Goa</option>
+                        <option value="Gujarat">Gujarat</option>
+                        <option value="Haryana">Haryana</option>
+                        <option value="Himachal Pradesh">Himachal Pradesh</option>
+                        <option value="Jharkhand">Jharkhand</option>
+                        <option value="Karnataka">Karnataka</option>
+                        <option value="Kerala">Kerala</option>
+                        <option value="Madhya Pradesh">Madhya Pradesh</option>
+                        <option value="Maharashtra">Maharashtra</option>
+                        <option value="Manipur">Manipur</option>
+                        <option value="Meghalaya">Meghalaya</option>
+                        <option value="Mizoram">Mizoram</option>
+                        <option value="Nagaland">Nagaland</option>
+                        <option value="Odisha">Odisha</option>
+                        <option value="Punjab">Punjab</option>
+                        <option value="Rajasthan">Rajasthan</option>
+                        <option value="Sikkim">Sikkim</option>
+                        <option value="Tamil Nadu">Tamil Nadu</option>
+                        <option value="Telangana">Telangana</option>
+                        <option value="Tripura">Tripura</option>
+                        <option value="Uttar Pradesh">Uttar Pradesh</option>
+                        <option value="Uttarakhand">Uttarakhand</option>
+                        <option value="West Bengal">West Bengal</option>
+                        <option value="Andaman and Nicobar Islands">Andaman and Nicobar Islands</option>
+                        <option value="Chandigarh">Chandigarh</option>
+                        <option value="Dadra and Nagar Haveli and Daman and Diu">Dadra and Nagar Haveli and Daman and Diu</option>
+                        <option value="Delhi">Delhi</option>
+                        <option value="Lakshadweep">Lakshadweep</option>
+                        <option value="Puducherry">Puducherry</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="district">District <span class="required">*</span></label>
+                    <input type="text" id="district" name="district" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="govMail">Govt. Mail Address <span class="required">*</span></label>
+                <input type="email" id="govMail" name="govMail" required>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="password">Password <span class="required">*</span></label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password <span class="required">*</span></label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Register">
+            </div>
+        </form>
+
+        <form id="station-form" style="display: none;">
+            <div class="form-group">
+                <label for="stationName">Police Station Name <span class="required">*</span></label>
+                <input type="text" id="stationName" name="stationName" required>
+            </div>
+            <div class="form-group">
+                <label for="stationMail">Police Station Mail ID <span class="required">*</span></label>
+                <input type="email" id="stationMail" name="stationMail" required>
+            </div>
+            <div class="form-group">
+                <label for="cityDistrict">City/District <span class="required">*</span></label>
+                <input type="text" id="cityDistrict" name="cityDistrict" required>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="stationPassword">Password <span class="required">*</span></label>
+                    <input type="password" id="stationPassword" name="stationPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="stationConfirmPassword">Confirm Password <span class="required">*</span></label>
+                    <input type="password" id="stationConfirmPassword" name="stationConfirmPassword" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Register">
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function showForm(formType) {
+            const personnelForm = document.getElementById('personnel-form');
+            const stationForm = document.getElementById('station-form');
+            const personnelBtn = document.getElementById('personnel-btn');
+            const stationBtn = document.getElementById('station-btn');
+
+            if (formType === 'personnel') {
+                personnelForm.style.display = 'block';
+                stationForm.style.display = 'none';
+                personnelBtn.classList.add('active');
+                stationBtn.classList.remove('active');
+            } else {
+                personnelForm.style.display = 'none';
+                stationForm.style.display = 'block';
+                personnelBtn.classList.remove('active');
+                stationBtn.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
