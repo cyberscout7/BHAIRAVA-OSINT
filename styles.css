@@ -73,8 +73,8 @@ body {
 .box h2 {
     font-size: 1.2em;
     margin: 0 0 10px;
-    neon: #2dd9fe;
-    neon-glow: #00a3d5;
+    font: #2dd9fe;
+    flex-flow: #00a3d5;
 }
 
 .input-section, .output-section {
@@ -108,10 +108,20 @@ input[type="text"], textarea {
     color: white;
   }
 
-textarea {
-    height: 80px;
-    resize: none;
-}
+  textarea {
+    width: 100%;
+    height: 200px;
+    white-space: pre-wrap; /* This preserves white spaces and allows HTML to render correctly */
+    overflow-wrap: break-word;
+    padding: 10px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    background-color: #f8f8f8;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
 
 textarea[readonly] {
     background-color: beige;
