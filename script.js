@@ -98,24 +98,68 @@ async function fetchCryptoData() {
     return;
   }
 
-  const apiKey = 'e53d28b6-adb8-439b-a5b8-e62b5e8c6461';
-  const apiURL = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://api.blockcypher.com/v1/btc/main/addrs/${cryptoInput}/balance?token=${apiKey}`)}`;
+  const clientId = '76333509-7b46-451c-9f07-7daefe1e6143'; // Replace with your Bitquery client ID
+  const clientSecret = 'pEnPL6YeYE5KeOSq47P8e02flm'; // Replace with your Bitquery client secret
+  const tokenUrl = 'https://oauth2.bitquery.io/oauth2/token';
+  const graphqlUrl = 'https://streaming.bitquery.io/graphql';
+  const corsProxyUrl = 'https://cors.bridged.cc/';
 
+  // Step 1: Obtain an access token
   try {
-    const response = await fetch(apiURL, {
-      method: 'GET',
+    const tokenResponse = await fetch(corsProxyUrl + tokenUrl, {
+      method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: new URLSearchParams({
+        grant_type: 'client_credentials',
+        client_id: clientId,
+        client_secret: clientSecret,
+        scope: 'api'
+      })
     });
+    console.log("Hello",tokenResponse)
 
-    if (!response.ok) {
-      throw new Error('Network response was not ok ' + response.statusText);
+    if (!tokenResponse.ok) {
+      throw new Error('Failed to obtain access token: ' + tokenResponse.statusText);
     }
 
-    const result = await response.json();
-    const data = JSON.parse(result.contents); // Parse the JSON from the proxy response
-    console.log(data);
+    const tokenData = await tokenResponse.json();
+    const accessToken = tokenData.access_token;
+    console.log('Access Token:', accessToken);
+
+    // Step 2: Fetch cryptocurrency data using the access token
+    const query = `
+    {
+      bitcoin {
+        address(address: {is: "${cryptoInput}"}) {
+          balance
+          received
+          spent
+          transactions {
+            count
+          }
+        }
+      }
+    }`;
+
+    const apiResponse = await fetch(corsProxyUrl + graphqlUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      },
+      body: JSON.stringify({ query })
+    });
+
+    if (!apiResponse.ok) {
+      throw new Error('Network response was not ok: ' + apiResponse.statusText);
+    }
+
+    const result = await apiResponse.json(); 
+    // const data = result.data.bitcoin.address[0]; // Access the first address in the response
+    // console.log(data);
+    console.log(result)
 
     // Format the data as a pretty-printed JSON string
     const formattedData = JSON.stringify(data, null, 2);
@@ -127,6 +171,8 @@ async function fetchCryptoData() {
     document.getElementById('cryptoOutput').innerText = 'Error: ' + error.message;
   }
 }
+
+
 
 // MOBILE NUMBER SEARCH
 document.getElementById('searchButton').addEventListener('click', searchData);
