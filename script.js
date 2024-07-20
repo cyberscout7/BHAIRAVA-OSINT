@@ -11,7 +11,7 @@ async function emailfetchData() {
     return;
   }
 
-  const apiKey = '4425f73eeccdeca7f74739d23ac7d8ba701c88df'; // Replace with your Hunter API key
+  const apiKey = '48688bbec005b2251a02d130cb6141ee117b1000'; // Updated with your Hunter.io API key
   const apiURL = `https://api.hunter.io/v2/email-verifier?email=${encodeURIComponent(emailInput)}&api_key=${apiKey}`;
   const proxyURL = `https://api.allorigins.win/get?url=${encodeURIComponent(apiURL)}`;
 
@@ -31,29 +31,16 @@ async function emailfetchData() {
     const data = JSON.parse(result.contents); // Parse the JSON from the proxy response
     console.log(data);
 
-    // Extract specific key-value pairs
-    const extractedData = {
-      status: data.data.status,
-      result: data.data.result,
-      email: data.data.email,
-      score: data.data.score,
-      mx_records: data.data.mx_records
-    };
+    
+    const formattedData = JSON.stringify(data, null, 2);
 
-    // Format the extracted data as a string
-    let formattedData = '';
-    for (const [key, value] of Object.entries(extractedData)) {
-      formattedData += `${key}: ${value}\n`;
-    }
-
-    // Display the formatted data in the result div
+    
     document.getElementById('emailOutput').innerText = formattedData;
   } catch (error) {
     console.error('There has been a problem with your fetch operation:', error);
     document.getElementById('emailOutput').innerText = 'Error: ' + error.message;
   }
 }
-
 
 // IP INVESTIGATION
 document.getElementById('fetchButton').addEventListener('click', fetchData);
@@ -86,33 +73,36 @@ async function fetchData() {
     const result = await response.json();
     const data = JSON.parse(result.contents); // Parse the JSON from the proxy response
     console.log(data);
-    document.getElementById('ipOutput').innerText = JSON.stringify(data, null, 2);
+
+    // Format the data as a pretty-printed JSON string
+    const formattedData = JSON.stringify(data, null, 2);
+
+    // Display the formatted data in the result div
+    document.getElementById('ipOutput').innerText = formattedData;
   } catch (error) {
     console.error('There has been a problem with your fetch operation:', error);
     document.getElementById('ipOutput').innerText = 'Error: ' + error.message;
   }
 }
 
-// CRYPTO ANALYSIS
+// CRYPTOCURRENCY ANALYSIS
+document.getElementById('cryptoFetch').addEventListener('click', fetchCryptoData);
 
-document.getElementById('cryptoFetch').addEventListener('click', cryptoFetchData);
-
-async function cryptoFetchData() {
+async function fetchCryptoData() {
   const cryptoInput = document.getElementById('cryptoInput').value.trim(); // Trim any leading/trailing spaces
-  console.log(cryptoInput); // Log the crypto input to the console
+  console.log(cryptoInput); // Log the cryptocurrency input to the console
 
   if (!cryptoInput) {
-    console.error('Please enter a cryptocurrency name');
-    document.getElementById('cryptoOutput').innerText = 'Error: Please enter a cryptocurrency name';
+    console.error('Please enter a cryptocurrency address');
+    document.getElementById('cryptoOutput').innerText = 'Error: Please enter a cryptocurrency address';
     return;
   }
 
-  const apiKey = '60942143-ef0d-4d47-82ec-2dad1a36b155';
-  const apiURL = `https://api.cryptocurrency.com/v1/cryptocurrency/quotes/latest?symbol=${encodeURIComponent(cryptoInput)}&CMC_PRO_API_KEY=${apiKey}`;
-  const proxyURL = `https://api.allorigins.win/get?url=${encodeURIComponent(apiURL)}`;
+  const apiKey = 'e53d28b6-adb8-439b-a5b8-e62b5e8c6461';
+  const apiURL = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://api.blockcypher.com/v1/btc/main/addrs/${cryptoInput}/balance?token=${apiKey}`)}`;
 
   try {
-    const response = await fetch(proxyURL, {
+    const response = await fetch(apiURL, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -127,32 +117,56 @@ async function cryptoFetchData() {
     const data = JSON.parse(result.contents); // Parse the JSON from the proxy response
     console.log(data);
 
-    // Check if the data exists and extract specific key-value pairs
-    if (data.data && data.data[cryptoInput]) {
-      const extractedData = {
-        name: data.data[cryptoInput].name,
-        symbol: data.data[cryptoInput].symbol,
-        price: data.data[cryptoInput].quote.USD.price,
-        market_cap: data.data[cryptoInput].quote.USD.market_cap,
-        volume_24h: data.data[cryptoInput].quote.USD.volume_24h,
-        percent_change_1h: data.data[cryptoInput].quote.USD.percent_change_1h,
-        percent_change_24h: data.data[cryptoInput].quote.USD.percent_change_24h,
-        percent_change_7d: data.data[cryptoInput].quote.USD.percent_change_7d
-      };
+    // Format the data as a pretty-printed JSON string
+    const formattedData = JSON.stringify(data, null, 2);
 
-      // Format the extracted data as a string
-      let formattedData = '';
-      for (const [key, value] of Object.entries(extractedData)) {
-        formattedData += `${key}: ${value}\n`;
-      }
-
-      // Display the formatted data in the result div
-      document.getElementById('cryptoOutput').innerText = formattedData;
-    } else {
-      document.getElementById('cryptoOutput').innerText = 'Error: Cryptocurrency not found';
-    }
+    // Display the formatted data in the result div
+    document.getElementById('cryptoOutput').innerText = formattedData;
   } catch (error) {
     console.error('There has been a problem with your fetch operation:', error);
     document.getElementById('cryptoOutput').innerText = 'Error: ' + error.message;
+  }
+}
+
+// MOBILE NUMBER SEARCH
+document.getElementById('searchButton').addEventListener('click', searchData);
+
+async function searchData() {
+  const mobileInput = document.getElementById('mobileInput').value.trim(); // Trim any leading/trailing spaces
+  console.log(mobileInput); // Log the mobile number input to the console
+
+  if (!mobileInput) {
+    console.error('Please enter a mobile number');
+    document.getElementById('mobileOutput').innerText = 'Error: Please enter a mobile number';
+    return;
+  }
+
+  const apiURL = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://api.numlookupapi.com/v1/validate/${mobileInput}`)}`;
+
+  try {
+    const response = await fetch(apiURL, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-API-KEY': 'kXRTnJxIZV5bH25ReO3T5oHVUVH0v0SR4MTE8eRW'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok ' + response.statusText);
+    }
+
+    const result = await response.json();
+    const data = JSON.parse(result.contents); // Parse the JSON from the proxy response
+    console.log(data);
+
+    // Format the data as a pretty-printed JSON string
+    const formattedData = JSON.stringify(data, null, 2);
+
+    // Display the formatted data in the result div
+    document.getElementById('mobileOutput').innerText = formattedData;
+  } catch (error) {
+    console.error('There has been a problem with your fetch operation:', error);
+    document.getElementById('mobileOutput').innerText = 'Error: ' + error.message;
   }
 }
